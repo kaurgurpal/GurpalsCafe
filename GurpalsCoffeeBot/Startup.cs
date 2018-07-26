@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder.BotFramework;
@@ -30,7 +31,7 @@ namespace GurpalsCoffeeBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBot<EchoBot>(options =>
+            services.AddBot<CoffeeBot>(options =>
             {
                 options.CredentialProvider = new ConfigurationCredentialProvider(Configuration);
 
@@ -41,7 +42,7 @@ namespace GurpalsCoffeeBot
                 // an "Ooops" message is sent. 
                 options.Middleware.Add(new CatchExceptionMiddleware<Exception>(async (context, exception) =>
                 {
-                    await context.TraceActivity("EchoBot Exception", exception);
+                    await context.TraceActivity("CoffeeBot Exception", exception);
                     await context.SendActivity("Sorry, it looks like something went wrong!");
                 }));
 
@@ -62,7 +63,7 @@ namespace GurpalsCoffeeBot
                 // IStorage dataStore = new Microsoft.Bot.Builder.Azure.AzureTableStorage("AzureTablesConnectionString", "TableName");
                 // IStorage dataStore = new Microsoft.Bot.Builder.Azure.AzureBlobStorage("AzureBlobConnectionString", "containerName");
 
-                options.Middleware.Add(new ConversationState<EchoState>(dataStore));
+                options.Middleware.Add(new ConversationState<Dictionary<string, object>>(dataStore));
             });
         }
 

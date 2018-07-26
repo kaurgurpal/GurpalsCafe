@@ -1,0 +1,23 @@
+{
+    "name": "CoffeeBot",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "",
+            "id": "46043930-9077-11e8-883b-b16fccb42f0a",
+            "type": "endpoint",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "name": "http://localhost:3978/api/messages"
+        },
+        {
+            "appId": "",
+            "id": "8ba6b130-909e-11e8-9f6a-979473b13d69",
+            "type": "endpoint",
+            "appPassword": "",
+            "endpoint": "http://localhost:58285/api/messages",
+            "name": "conversation"
+        }
+    ]
+}
