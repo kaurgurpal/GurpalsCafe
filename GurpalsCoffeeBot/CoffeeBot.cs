@@ -12,6 +12,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Connector;
 using System.Net;
+using ChoiceFactory = Microsoft.Bot.Builder.Prompts.Choices.ChoiceFactory;
 
 namespace GurpalsCoffeeBot
 {
@@ -50,7 +51,7 @@ namespace GurpalsCoffeeBot
                     //string selection=(args as Microsoft.Bot.Builder.Prompts.ChoiceResult).Value.Value.ToString();
                     //selectedOptions.Add(selection);
                     selectedOption=(args as Microsoft.Bot.Builder.Prompts.ChoiceResult).Value.Value.ToString();
-                    await dc.Prompt("choicePrompt", "What size??", coffeeSizeOptions);
+                    await dc.Prompt("sizeChoicePrompt", "What size??", coffeeSizeOptions);
                 },
                 async(dc, args, next)=>
                 {
@@ -82,12 +83,19 @@ namespace GurpalsCoffeeBot
             };
             
             dialogs.Add("choicePrompt", coffeePrompt);
-            
+            var coffeeSizePrompt = new ChoicePrompt(Culture.English)
+            {
+                Style = Microsoft.Bot.Builder.Prompts.ListStyle.List
+            };
+
+            dialogs.Add("sizeChoicePrompt", coffeeSizePrompt);
+
             dialogs.Add("confirmPrompt", new ConfirmPrompt(Culture.English));
         }
         // Create our prompt's choices
         private ChoicePromptOptions GenerateOptions()
         {
+            
             return new ChoicePromptOptions()
             {
                 Choices = new List<Choice>()
@@ -122,7 +130,8 @@ namespace GurpalsCoffeeBot
                         Value = "Hot Chocolate",
                         Synonyms = new List<string>() { "6", "hot chocolate","chocolate" }
                     }
-                }
+                },
+                RetryPromptActivity = MessageFactory.Text("Please choose from the given options.") as Activity
             };
         }
        
@@ -147,7 +156,9 @@ namespace GurpalsCoffeeBot
                         Value = "Large",
                         Synonyms = new List<string>() { "3", "large" }
                     }
-                }
+                },
+
+                RetryPromptActivity = MessageFactory.Text("Please choose from the given options.") as Activity
             };
         }
         
